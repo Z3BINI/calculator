@@ -1,6 +1,11 @@
+@font-face {
+    font-family: 'digital'; /*a name to be used later*/
+    src: url('./../font/digital-7.ttf'); /*URL to font*/
+}
 * {
     margin: 0;
     padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 body {
     display: flex;
@@ -8,20 +13,69 @@ body {
     align-items: center;
     height: 100vh;
 }
+p {
+    margin-bottom: 5px;
+}
 .calculator {
     width: 400px;
     height: 650px;
-    border: 1px solid black;
+    min-width: 400px;
+    min-height: 650px;
+
+    border: 5px solid rgb(45, 40, 40);
+    padding: 10px 20px 20px 20px;
+
     display: flex;
     flex-direction: column;
+    text-align: center;
 }
 
 .screen {
-    flex: 1 1 auto;
-    border: 1px solid black;
+    flex: 1 1 75px;
+    border: 3px solid black;
+
+    margin-bottom: 5px;
+
+    font-family: 'digital';
+    background-color: rgb(192, 199, 173);
 }
 
 .buttons {
     flex: 4 1 auto;
-    border: 1px solid black;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    font-size: 45px;
+}
+.btn {
+    width: 100px;
+    border: 2px solid rgb(33, 33, 33);
+    border-radius: 5px;
+
+    background-color: rgba(255, 0, 0, 0.3);  
+    color: white;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btnRow {
+    display: flex;
+    flex: auto;
+    gap: 10px;
+}
+
+.btn.zero {
+    flex: 2 1 auto;
+}
+
+.btn.op {
+    background-color: rgb(0, 0, 255, 0.3);
+}
+
+.btn.nums {
+    background-color: rgb(0, 255, 0, 0.3);
 }
