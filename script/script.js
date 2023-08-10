@@ -1,4 +1,4 @@
-const body = document.querySelector('body');
+const body = document.querySelector('.calculator');
 
 const generateRandomRGB = () => Math.floor(Math.random() * 256);
 
