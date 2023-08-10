@@ -1,3 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+}
 body {
-    background-color: blueviolet;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.calculator {
+    width: 400px;
+    height: 650px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+.screen {
+    flex: 1 1 auto;
+    border: 1px solid black;
+}
+
+.buttons {
+    flex: 4 1 auto;
+    border: 1px solid black;
 }
