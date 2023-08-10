@@ -1,10 +1,10 @@
-const body = document.querySelector('.calculator');
+const calculatorBody = document.querySelector('.calculator');
+
+const calcBtns = document.querySelectorAll('.btn');
 
 const generateRandomRGB = () => Math.floor(Math.random() * 256);
 
-const getStartingBehaviour = (color) => {
-    return (color > 126) ? 'decreasing' : 'increasing'; //Random RGB value decides if behaviour starts increasing/decreasing
-}  
+const getStartingBehaviour = (color) => (color > 126) ? 'decreasing' : 'increasing'; //Random RGB value decides if behaviour starts increasing/decreasing
 
 const colors = [{
     color: generateRandomRGB(),
@@ -21,7 +21,7 @@ colors.map( color => {
     color.fadeBehaviour = getStartingBehaviour(color.color); //Get the starting behaviour initialized
 });
 
-body.style.cssText = `background-color: rgb(${colors[0].color},${colors[1].color},${colors[2].color}, 1);`; //Initialize the background color
+calculatorBody.style.cssText = `background-color: rgb(${colors[0].color},${colors[1].color},${colors[2].color}, 1);`; //Initialize the background color
 
 function fadeBgColor(colors) {
 
@@ -39,7 +39,7 @@ function fadeBgColor(colors) {
 
     });
 
-    body.style.cssText = `background-color: rgb(${colors[0].color},${colors[1].color},${colors[2].color}, 1);`; //Updates the background color with new value
+    calculatorBody.style.cssText = `background-color: rgb(${colors[0].color},${colors[1].color},${colors[2].color}, 1);`; //Updates the background color with new value
 
 }
 
@@ -47,8 +47,10 @@ setInterval(() => {
 
     fadeBgColor(colors);
 
-  }, 60); //Executes fadeBgColor() every 60 miliseconds
+}, 60); //Executes fadeBgColor() every 60 miliseconds
 
+
+calcBtns.forEach(btn => btn.addEventListener('click', (e) => console.log(e)));
 
 const add = (x, y) => x + y;
 const subtract = (x, y) => x - y;
