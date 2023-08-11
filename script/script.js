@@ -62,7 +62,7 @@ const currentOperation = {
     accomulator: 0
 };
 
-function whatIsBeingClicked(event) {
+function whatIsBeingClicked(event) {console.log(currentOperation);
 
     const whatIsClicked = event.target.className;
 
@@ -105,7 +105,38 @@ function whatIsBeingClicked(event) {
         currentOperation.operationType = event.target.innerText;
 
     }
-    if (whatIsClicked.includes('equals')) console.log('equals')
+    if (whatIsClicked.includes('equals')) {
+        if (currentOperation.currentNumber === '' && currentOperation.operationType !== '' && currentOperation.accomulator !== 0) {
+            switch (currentOperation.operationType) {
+                case ('+'):
+                    currentOperation.accomulator += currentOperation.accomulator;
+                    currentOperation.currentNumber = '';
+                    currentOperation.operationType = '';
+                    break;
+                case ('-'):
+                    currentOperation.accomulator -= currentOperation.accomulator;
+                    currentOperation.currentNumber = '';
+                    currentOperation.operationType = '';
+                    break;
+                case ('/'):
+                    currentOperation.accomulator /= currentOperation.accomulator;
+                    currentOperation.currentNumber = '';
+                    currentOperation.operationType = '';
+                    break;
+                case ('x'):
+                    currentOperation.accomulator *= currentOperation.accomulator;
+                    currentOperation.currentNumber = '';
+                    currentOperation.operationType = '';
+                    break;
+                case ('%'):
+                    currentOperation.accomulator = currentOperation.accomulator % currentOperation.accomulator;
+                    currentOperation.currentNumber = '';
+                    currentOperation.operationType = '';
+                    break;
+            }   
+        }
+        
+    }
 
     if (whatIsClicked.includes('AC')) resetCalc();
 
@@ -126,15 +157,22 @@ const numberAccomulator = clickedNumber => currentOperation.currentNumber += cli
 
 const showOnScreen = (currentOperation) => { 
 
+    let doneCalculating = false;
+    let latestAnswr;
+
     if (currentOperation.operationType === '' && currentOperation.accomulator === 0) {
         screenOperation.innerText = `${currentOperation.currentNumber}`;
     } else if (currentOperation.operationType !== '' && currentOperation.currentNumber === '') {
         screenOperation.innerText = `${currentOperation.accomulator} ${currentOperation.operationType}`;
+    } else if (currentOperation.accomulator !== 0 && currentOperation.operationType === '' && currentOperation.currentNumber === '') {
+        doneCalculating = true;
+        latestAnswr = currentOperation.accomulator;
+        resetCalc();
     } else {
         screenOperation.innerText = `${currentOperation.accomulator} ${currentOperation.operationType} ${currentOperation.currentNumber}`;
     }
      
-    screenResult.innerText = currentOperation.accomulator;
+    return (doneCalculating) ? screenResult.innerText = latestAnswr : screenResult.innerText = currentOperation.accomulator;
 }
 
 function operation(currentOperation) {
