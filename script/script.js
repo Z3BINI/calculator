@@ -94,6 +94,11 @@ function whatIsBeingClicked(event) {
                     currentOperation.currentNumber = '';
                     currentOperation.operationType = '';
                     break;
+                case ('%'):
+                    currentOperation.accomulator = currentOperation.accomulator % +(currentOperation.currentNumber);
+                    currentOperation.currentNumber = '';
+                    currentOperation.operationType = '';
+                    break;
             }
         }
 
