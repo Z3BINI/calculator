@@ -2,6 +2,10 @@ const calculatorBody = document.querySelector('.calculator');
 
 const calcBtns = document.querySelectorAll('.btn');
 
+const screenOperation = document.querySelector('.screen .operation');
+
+const screenResult = document.querySelector('.screen .result');
+
 const generateRandomRGB = () => Math.floor(Math.random() * 256);
 
 const getStartingBehaviour = (color) => (color > 126) ? 'decreasing' : 'increasing'; //Random RGB value decides if behaviour starts increasing/decreasing
@@ -50,7 +54,17 @@ setInterval(() => {
 }, 60); //Executes fadeBgColor() every 60 miliseconds
 
 
-calcBtns.forEach(btn => btn.addEventListener('click', (e) => console.log(e)));
+calcBtns.forEach(btn => btn.addEventListener('click', whatIsBeingClicked));
+
+function whatIsBeingClicked(event) {
+
+    const whatIsClicked = event.target.className;
+
+    if (whatIsClicked.includes('nums')) console.log('numbers')
+    if (whatIsClicked.includes('op')) console.log('operator')
+    if (whatIsClicked.includes('equals')) console.log('equals')
+
+}
 
 const add = (x, y) => x + y;
 const subtract = (x, y) => x - y;
