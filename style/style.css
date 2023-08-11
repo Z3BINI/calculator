@@ -32,14 +32,30 @@ p {
 
 .screen {
     flex: 1 1 75px;
+    display: flex;
+    flex-direction: column;
+
+    width: 400px;
+    height: 125px;
+
     border: 3px solid black;
-
     margin-bottom: 5px;
-
-    font-family: 'digital';
     background-color: rgb(217,255,234);
 }
-
+.result{
+    align-self: flex-end;
+    font-family: 'digital';
+    font-size: 60px;
+    flex: 2 1 auto;
+    border: 1px solid red;
+}
+.operation {
+    font-family: 'digital';
+    font-size: 45px;
+    flex: 1 1 auto;
+    border: 1px solid red;
+    align-self: flex-start;
+}
 .buttons {
     flex: 4 1 auto;
 
