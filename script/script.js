@@ -1,11 +1,5 @@
 const calculatorBody = document.querySelector('.calculator');
 
-const calcBtns = document.querySelectorAll('.btn');
-
-const screenOperation = document.querySelector('.screen .operation');
-
-const screenResult = document.querySelector('.screen .result');
-
 const generateRandomRGB = () => Math.floor(Math.random() * 256);
 
 const getStartingBehaviour = (color) => (color > 126) ? 'decreasing' : 'increasing'; //Random RGB value decides if behaviour starts increasing/decreasing
@@ -53,133 +47,123 @@ setInterval(() => {
 
 }, 60); //Executes fadeBgColor() every 60 miliseconds
 
+//Above is all background color fade code
 
-calcBtns.forEach(btn => btn.addEventListener('click', whatIsBeingClicked));
-
-const currentOperation = {
-    currentNumber: '',
-    operationType: '',
-    accomulator: 0
+const calcBtns = document.querySelectorAll('.btn');
+const screenOperation = document.querySelector('.screen .operation');
+const screenResult = document.querySelector('.screen .result');
+const currentOperation = { //Initialize the current operation object
+    operandOne: '',
+    operandTwo: '',
+    operator: '',
+    result: 0
 };
 
-function whatIsBeingClicked(event) {console.log(currentOperation);
+calcBtns.forEach(btn => btn.addEventListener('click', whatIsBeingClicked)); 
 
-    const whatIsClicked = event.target.className;
+function whatIsBeingClicked(event) {
 
-    if (whatIsClicked.includes('nums')){
-        numberAccomulator(event.target.innerText);
+    const clickedElementClasses = event.target.className; //Get the classes of clicked element to verify/control
+
+    if (clickedElementClasses.includes('nums')){
+
+        if (currentOperation.operator === '') {
+            numberAccomulator(event.target.innerText, 'operandOne');
+        } else {
+            numberAccomulator(event.target.innerText, 'operandTwo');
+        }
     } 
 
-    if (whatIsClicked.includes('op')) {
+    if (clickedElementClasses.includes('op')) {
 
-        if (currentOperation.currentNumber !== '' && currentOperation.accomulator) {
-            switch (currentOperation.operationType) {
-                case ('+'):
-                    currentOperation.accomulator += +(currentOperation.currentNumber);
-                    currentOperation.currentNumber = '';
-                    currentOperation.operationType = '';
-                    break;
-                case ('-'):
-                    currentOperation.accomulator -= +(currentOperation.currentNumber);
-                    currentOperation.currentNumber = '';
-                    currentOperation.operationType = '';
-                    break;
-                case ('/'):
-                    currentOperation.accomulator /= +(currentOperation.currentNumber);
-                    currentOperation.currentNumber = '';
-                    currentOperation.operationType = '';
-                    break;
-                case ('x'):
-                    currentOperation.accomulator *= +(currentOperation.currentNumber);
-                    currentOperation.currentNumber = '';
-                    currentOperation.operationType = '';
-                    break;
-                case ('%'):
-                    currentOperation.accomulator = currentOperation.accomulator % +(currentOperation.currentNumber);
-                    currentOperation.currentNumber = '';
-                    currentOperation.operationType = '';
-                    break;
-            }
-        }
-
-        currentOperation.operationType = event.target.innerText;
+        currentOperation.operator = event.target.innerText;
 
     }
-    if (whatIsClicked.includes('equals')) {
-        if (currentOperation.currentNumber === '' && currentOperation.operationType !== '' && currentOperation.accomulator !== 0) {
-            switch (currentOperation.operationType) {
-                case ('+'):
-                    currentOperation.accomulator += currentOperation.accomulator;
-                    currentOperation.currentNumber = '';
-                    currentOperation.operationType = '';
-                    break;
-                case ('-'):
-                    currentOperation.accomulator -= currentOperation.accomulator;
-                    currentOperation.currentNumber = '';
-                    currentOperation.operationType = '';
-                    break;
-                case ('/'):
-                    currentOperation.accomulator /= currentOperation.accomulator;
-                    currentOperation.currentNumber = '';
-                    currentOperation.operationType = '';
-                    break;
-                case ('x'):
-                    currentOperation.accomulator *= currentOperation.accomulator;
-                    currentOperation.currentNumber = '';
-                    currentOperation.operationType = '';
-                    break;
-                case ('%'):
-                    currentOperation.accomulator = currentOperation.accomulator % currentOperation.accomulator;
-                    currentOperation.currentNumber = '';
-                    currentOperation.operationType = '';
-                    break;
-            }   
+
+
+    if (clickedElementClasses.includes('equals')) {
+        if (checkCalcObjStatus()) {
+
+            decideOperation(currentOperation.operator);
+
+            
+        } else {
+            resetCalculator();
         }
-        
     }
 
-    if (whatIsClicked.includes('AC')) resetCalc();
-
-
-    operation(currentOperation);
-
+    
     showOnScreen(currentOperation);
+    
+    
+}
+
+function decideOperation(operator) {
+
+    switch (operator) {
+        case ('+'):
+            currentOperation.result = add(+currentOperation.operandOne, +currentOperation.operandTwo);
+            resetCalculator();
+            break;
+        case ('-'):
+            currentOperation.result = subtract(+currentOperation.operandOne, +currentOperation.operandTwo);
+            resetCalculator();
+            break;
+        case ('/'):
+            currentOperation.result = divide(+currentOperation.operandOne, +currentOperation.operandTwo);
+            resetCalculator();
+            break;
+        case ('x'):
+            currentOperation.result = multiply(+currentOperation.operandOne, +currentOperation.operandTwo);
+            resetCalculator();
+            break;
+        case ('%'):
+            currentOperation.result = modulo(+currentOperation.operandOne, c+urrentOperation.operandTwo);
+            resetCalculator();
+            break;
+    }
 
 }
 
-const resetCalc = () => {
-    currentOperation.currentNumber = '';
-    currentOperation.operationType = '';
-    currentOperation.accomulator = 0;
-}
+function showOnScreen(currentOperation) { 
 
-const numberAccomulator = clickedNumber => currentOperation.currentNumber += clickedNumber;
-
-const showOnScreen = (currentOperation) => { 
-
-    let doneCalculating = false;
-    let latestAnswr;
-
-    if (currentOperation.operationType === '' && currentOperation.accomulator === 0) {
-        screenOperation.innerText = `${currentOperation.currentNumber}`;
-    } else if (currentOperation.operationType !== '' && currentOperation.currentNumber === '') {
-        screenOperation.innerText = `${currentOperation.accomulator} ${currentOperation.operationType}`;
-    } else if (currentOperation.accomulator !== 0 && currentOperation.operationType === '' && currentOperation.currentNumber === '') {
-        doneCalculating = true;
-        latestAnswr = currentOperation.accomulator;
-        resetCalc();
+    if (currentOperation.operandOne !== '' && (currentOperation.operator === '' && currentOperation.operandTwo === '')) {
+        screenOperation.innerText = `${currentOperation.operandOne}`;
+    }else if ((currentOperation.operandOne !== '' && currentOperation.operator !== '') && currentOperation.operandTwo === '') {
+        screenOperation.innerText = `${currentOperation.operandOne} ${currentOperation.operator}`;
     } else {
-        screenOperation.innerText = `${currentOperation.accomulator} ${currentOperation.operationType} ${currentOperation.currentNumber}`;
+        screenOperation.innerText = `${currentOperation.operandOne} ${currentOperation.operator} ${currentOperation.operandTwo}`;
     }
-     
-    return (doneCalculating) ? screenResult.innerText = latestAnswr : screenResult.innerText = currentOperation.accomulator;
+    
+
+    screenResult.innerText = currentOperation.result;
+
+   
+
 }
 
-function operation(currentOperation) {
-    if (currentOperation.operationType !== '') {
-        if (!(currentOperation.accomulator)) {
-            currentOperation.accomulator = +(currentOperation.currentNumber);
-            currentOperation.currentNumber = '';
-        }
-    }
+const numberAccomulator = (numberPressed, operand) => currentOperation[operand] += numberPressed;
+
+function checkCalcObjStatus() { 
+    
+    if (currentOperation.operator === '' || currentOperation.operandOne === '' || currentOperation.operandTwo === '') return 0;
+
+
+    return 1;    
+
 }
+
+const resetCalculator = () => {
+    currentOperation.operandOne = '';
+    currentOperation.operandTwo = '';
+    currentOperation.operator = '';
+}
+
+const add = (x, y) => x + y;
+const subtract = (x, y) => x - y;
+const divide = (x, y) => x / y;
+const multiply = (x, y) => x * y;
+const modulo = (x, y) => x % y;
+
+
+
