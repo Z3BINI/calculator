@@ -98,7 +98,6 @@ function whatIsBeingClicked(event) {
         }
 
         currentOperation.operationType = event.target.innerText;
-        console.log(currentOperation.operationType);
 
     }
     if (whatIsClicked.includes('equals')) console.log('equals')
@@ -106,16 +105,26 @@ function whatIsBeingClicked(event) {
 
     operation(currentOperation);
 
+    showOnScreen(currentOperation);
+
 }
 
 const numberAccomulator = clickedNumber => currentOperation.currentNumber += clickedNumber;
 
-const showOnScreen = (currentOperation, result = 0) => {
-    screenOperation.innerText = currentOperation;
-    screenResult.innerText = result;
+const showOnScreen = (currentOperation) => { 
+
+    if (currentOperation.operationType === '' && currentOperation.accomulator === 0) {
+        screenOperation.innerText = `${currentOperation.currentNumber}`;
+    } else if (currentOperation.operationType !== '' && currentOperation.currentNumber === '') {
+        screenOperation.innerText = `${currentOperation.accomulator} ${currentOperation.operationType}`;
+    } else {
+        screenOperation.innerText = `${currentOperation.accomulator} ${currentOperation.operationType} ${currentOperation.currentNumber}`;
+    }
+     
+    screenResult.innerText = currentOperation.accomulator;
 }
 
-function operation(currentOperation) {console.log(currentOperation);
+function operation(currentOperation) {
     if (currentOperation.operationType !== '') {
         if (!(currentOperation.accomulator)) {
             currentOperation.accomulator = +(currentOperation.currentNumber);
@@ -123,8 +132,3 @@ function operation(currentOperation) {console.log(currentOperation);
         }
     }
 }
-
-const add = (x, y) => x + y;
-const subtract = (x, y) => x - y;
-const multiply = (x, y) => x * y;
-const divide = (x, y) => x / y;
