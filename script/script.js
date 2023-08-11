@@ -107,11 +107,19 @@ function whatIsBeingClicked(event) {
     }
     if (whatIsClicked.includes('equals')) console.log('equals')
 
+    if (whatIsClicked.includes('AC')) resetCalc();
+
 
     operation(currentOperation);
 
     showOnScreen(currentOperation);
 
+}
+
+const resetCalc = () => {
+    currentOperation.currentNumber = '';
+    currentOperation.operationType = '';
+    currentOperation.accomulator = 0;
 }
 
 const numberAccomulator = clickedNumber => currentOperation.currentNumber += clickedNumber;
