@@ -76,6 +76,10 @@ function whatIsBeingClicked(event) {
 
     if (clickedElementClasses.includes('op')) {
 
+        if (currentOperation.result !== 0 && currentOperation.operandOne === '') currentOperation.operandOne = currentOperation.result;
+
+        if (currentOperation.operandOne !== '' && currentOperation.operator !== '' && currentOperation.operandTwo !== '') decideOperation(currentOperation.operator);
+
         currentOperation.operator = event.target.innerText;
 
     }
@@ -90,6 +94,12 @@ function whatIsBeingClicked(event) {
         } else {
             resetCalculator();
         }
+    
+    }
+
+    if (clickedElementClasses.includes('AC')) {
+        resetCalculator();
+        currentOperation.result = 0;
     }
 
     
@@ -103,6 +113,7 @@ function decideOperation(operator) {
     switch (operator) {
         case ('+'):
             currentOperation.result = add(+currentOperation.operandOne, +currentOperation.operandTwo);
+            console.log(currentOperation);
             resetCalculator();
             break;
         case ('-'):
@@ -118,7 +129,7 @@ function decideOperation(operator) {
             resetCalculator();
             break;
         case ('%'):
-            currentOperation.result = modulo(+currentOperation.operandOne, c+urrentOperation.operandTwo);
+            currentOperation.result = modulo(+currentOperation.operandOne, currentOperation.operandTwo);
             resetCalculator();
             break;
     }
@@ -135,10 +146,7 @@ function showOnScreen(currentOperation) {
         screenOperation.innerText = `${currentOperation.operandOne} ${currentOperation.operator} ${currentOperation.operandTwo}`;
     }
     
-
     screenResult.innerText = currentOperation.result;
-
-   
 
 }
 
