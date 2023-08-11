@@ -56,14 +56,72 @@ setInterval(() => {
 
 calcBtns.forEach(btn => btn.addEventListener('click', whatIsBeingClicked));
 
+const currentOperation = {
+    currentNumber: '',
+    operationType: '',
+    accomulator: 0
+};
+
 function whatIsBeingClicked(event) {
 
     const whatIsClicked = event.target.className;
 
-    if (whatIsClicked.includes('nums')) console.log('numbers')
-    if (whatIsClicked.includes('op')) console.log('operator')
+    if (whatIsClicked.includes('nums')){
+        numberAccomulator(event.target.innerText);
+    } 
+
+    if (whatIsClicked.includes('op')) {
+
+        if (currentOperation.currentNumber !== '' && currentOperation.accomulator) {
+            switch (currentOperation.operationType) {
+                case ('+'):
+                    currentOperation.accomulator += +(currentOperation.currentNumber);
+                    currentOperation.currentNumber = '';
+                    currentOperation.operationType = '';
+                    break;
+                case ('-'):
+                    currentOperation.accomulator -= +(currentOperation.currentNumber);
+                    currentOperation.currentNumber = '';
+                    currentOperation.operationType = '';
+                    break;
+                case ('/'):
+                    currentOperation.accomulator /= +(currentOperation.currentNumber);
+                    currentOperation.currentNumber = '';
+                    currentOperation.operationType = '';
+                    break;
+                case ('x'):
+                    currentOperation.accomulator *= +(currentOperation.currentNumber);
+                    currentOperation.currentNumber = '';
+                    currentOperation.operationType = '';
+                    break;
+            }
+        }
+
+        currentOperation.operationType = event.target.innerText;
+        console.log(currentOperation.operationType);
+
+    }
     if (whatIsClicked.includes('equals')) console.log('equals')
 
+
+    operation(currentOperation);
+
+}
+
+const numberAccomulator = clickedNumber => currentOperation.currentNumber += clickedNumber;
+
+const showOnScreen = (currentOperation, result = 0) => {
+    screenOperation.innerText = currentOperation;
+    screenResult.innerText = result;
+}
+
+function operation(currentOperation) {console.log(currentOperation);
+    if (currentOperation.operationType !== '') {
+        if (!(currentOperation.accomulator)) {
+            currentOperation.accomulator = +(currentOperation.currentNumber);
+            currentOperation.currentNumber = '';
+        }
+    }
 }
 
 const add = (x, y) => x + y;
