@@ -21,7 +21,7 @@ colors.map( color => {
 
 calculatorBody.style.cssText = `background-color: rgb(${colors[0].color},${colors[1].color},${colors[2].color}, 1);`; //Initialize the background color
 
-function fadeBgColor(colors) { console.log(colors[0].color, colors[1].color, colors[2].color);
+function fadeBgColor(colors) { 
 
     colors.map(color => { //Loop through RGB and check color values to know when to invert growth.
 
@@ -124,7 +124,7 @@ function whatIsBeingClicked(event) {
         currentOperation.result = 0;
     }
 
-    if (clickedElementClasses.includes('negPlus')) {console.log(currentOperation);
+    if (clickedElementClasses.includes('negPlus')) {
         if (currentOperation.operandOne !== '' && currentOperation.operandTwo === '') {
             if (!(currentOperation.operandOne.includes('-'))) {
                 currentOperation.operandOne = '-' + currentOperation.operandOne;
