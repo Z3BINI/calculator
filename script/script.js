@@ -83,7 +83,7 @@ function whatIsBeingClicked(event) {
             } else {
                 decideOperation(currentOperation.operator);
                 currentOperation.operator = event.target.innerText;
-                currentOperation.operandOne = currentOperation.result;                
+                currentOperation.operandOne = currentOperation.result.toString();                
             }
             
         } else {
@@ -109,7 +109,7 @@ function whatIsBeingClicked(event) {
         currentOperation.result = 0;
     }
 
-    if (clickedElementClasses.includes('negPlus')) {
+    if (clickedElementClasses.includes('negPlus')) {console.log(currentOperation);
         if (currentOperation.operandOne !== '' && currentOperation.operandTwo === '') {
             if (!(currentOperation.operandOne.includes('-'))) {
                 currentOperation.operandOne = '-' + currentOperation.operandOne;
@@ -125,6 +125,16 @@ function whatIsBeingClicked(event) {
                 currentOperation.operandTwo = currentOperation.operandTwo.slice(1);
             }
             
+        }
+    }
+
+    if (clickedElementClasses.includes('dot')) {
+        if (currentOperation.operandTwo === '' && currentOperation.operator === '') {
+            if (!(currentOperation.operandOne.includes('.'))) numberAccomulator('.', 'operandOne');                    
+        }
+
+        if (currentOperation.operandOne !== '' && currentOperation.operator !== '') {
+            if (!(currentOperation.operandTwo.includes('.'))) numberAccomulator('.', 'operandTwo');                    
         }
     }
    
@@ -191,7 +201,7 @@ function showOnScreen(currentOperation) {
         screenOperation.innerText = `${currentOperation.operandOne} ${currentOperation.operator} ${currentOperation.operandTwo}`;
     }
     
-    screenResult.innerText = currentOperation.result;
+    screenResult.innerText = Math.round((currentOperation.result + Number.EPSILON) * 100) / 100;
 
 }
 
