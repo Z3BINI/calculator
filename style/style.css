@@ -12,6 +12,9 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    min-width: 700px;
+    background-image: url(./../img/backgroundImg.jpg);
+    background-position: center;
 }
 p {
     margin-bottom: 5px;
@@ -34,6 +37,7 @@ p {
     flex: 1 1 75px;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
 
     width: 400px;
     height: 125px;
@@ -46,15 +50,15 @@ p {
     align-self: flex-end;
     font-family: 'digital';
     font-size: 60px;
-    flex: 2 1 auto;
-    border: 1px solid red;
+    flex: 0 0 66%;
+    margin-right: 15px;
 }
 .operation {
     font-family: 'digital';
     font-size: 45px;
-    flex: 1 1 auto;
-    border: 1px solid red;
+    flex: 0 0 33%;
     align-self: flex-start;
+    margin-left: 15px;
 }
 .buttons {
     flex: 4 1 auto;
