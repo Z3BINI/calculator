@@ -21,7 +21,7 @@ colors.map( color => {
 
 calculatorBody.style.cssText = `background-color: rgb(${colors[0].color},${colors[1].color},${colors[2].color}, 1);`; //Initialize the background color
 
-function fadeBgColor(colors) {
+function fadeBgColor(colors) { console.log(colors[0].color, colors[1].color, colors[2].color);
 
     colors.map(color => { //Loop through RGB and check color values to know when to invert growth.
 
@@ -31,9 +31,25 @@ function fadeBgColor(colors) {
             color.color--; 
         }
 
-        if (color.color < 1) color.fadeBehaviour = 'increasing'; 
+        if (color.color < 1) {
+            color.color = 1;
+            color.fadeBehaviour = 'increasing'; 
+        }
 
-        if (color.color > 254) color.fadeBehaviour = 'decreasing';
+        if (color.color > 254) {
+            color.color = 254;
+            color.fadeBehaviour = 'decreasing';
+        } 
+
+        if (generateRandomRGB() === 69) { //Try to make colors more random instead of back and forth through the spectrum
+            colors.map(color => {
+                if (color.fadeBehaviour === 'increasing') {
+                    color.fadeBehaviour = 'decreasing';
+                } else {
+                    color.fadeBehaviour = 'increasing';
+                }
+            });
+        }
 
     });
 
@@ -97,7 +113,6 @@ function whatIsBeingClicked(event) {
 
             decideOperation(currentOperation.operator);
 
-            
         } else {
             resetCalculator();
         }
@@ -137,8 +152,6 @@ function whatIsBeingClicked(event) {
             if (!(currentOperation.operandTwo.includes('.'))) numberAccomulator('.', 'operandTwo');                    
         }
     }
-   
-
     
     showOnScreen(currentOperation);
     
