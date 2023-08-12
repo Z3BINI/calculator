@@ -61,7 +61,7 @@ const currentOperation = { //Initialize the current operation object
 
 calcBtns.forEach(btn => btn.addEventListener('click', whatIsBeingClicked)); 
 
-function whatIsBeingClicked(event) {
+function whatIsBeingClicked(event) { console.log(currentOperation);
 
     const clickedElementClasses = event.target.className; //Get the classes of clicked element to verify/control
 
@@ -76,17 +76,24 @@ function whatIsBeingClicked(event) {
 
     if (clickedElementClasses.includes('op')) {
 
-        if (currentOperation.result !== 0 && currentOperation.operandOne === '') currentOperation.operandOne = currentOperation.result;
+        if (checkCalcObjStatus('op')) {
 
-        if (currentOperation.operandOne !== '' && currentOperation.operator !== '' && currentOperation.operandTwo !== '') decideOperation(currentOperation.operator);
-
-        currentOperation.operator = event.target.innerText;
+            if (currentOperation.operandTwo === '' && currentOperation.operandOne !== '') {
+                currentOperation.operator = event.target.innerText;
+            } else {
+                decideOperation(currentOperation.operator);
+                currentOperation.operator = event.target.innerText;
+                currentOperation.operandOne = currentOperation.result;                
+            }
+            
+        } else {
+            resetCalculator();
+        }
 
     }
 
-
     if (clickedElementClasses.includes('equals')) {
-        if (checkCalcObjStatus()) {
+        if (checkCalcObjStatus('equals')) {
 
             decideOperation(currentOperation.operator);
 
@@ -102,9 +109,10 @@ function whatIsBeingClicked(event) {
         currentOperation.result = 0;
     }
 
+   
+
     
     showOnScreen(currentOperation);
-    
     
 }
 
@@ -112,24 +120,43 @@ function decideOperation(operator) {
 
     switch (operator) {
         case ('+'):
-            currentOperation.result = add(+currentOperation.operandOne, +currentOperation.operandTwo);
-            console.log(currentOperation);
+            if (currentOperation.operandTwo !== '') {
+                currentOperation.result = add(+currentOperation.operandOne, +currentOperation.operandTwo);
+            } else {
+                currentOperation.result = add(+currentOperation.operandOne, +currentOperation.operandOne);
+            }
             resetCalculator();
             break;
         case ('-'):
-            currentOperation.result = subtract(+currentOperation.operandOne, +currentOperation.operandTwo);
+            if (currentOperation.operandTwo !== '') {
+                currentOperation.result = subtract(+currentOperation.operandOne, +currentOperation.operandTwo);
+            } else {
+                currentOperation.result = subtract(+currentOperation.operandOne, +currentOperation.operandOne);
+            }
             resetCalculator();
             break;
         case ('/'):
-            currentOperation.result = divide(+currentOperation.operandOne, +currentOperation.operandTwo);
+            if (currentOperation.operandTwo !== '') {
+                currentOperation.result = divide(+currentOperation.operandOne, +currentOperation.operandTwo);
+            } else {
+                currentOperation.result = divide(+currentOperation.operandOne, +currentOperation.operandOne);
+            }
             resetCalculator();
             break;
         case ('x'):
-            currentOperation.result = multiply(+currentOperation.operandOne, +currentOperation.operandTwo);
+            if (currentOperation.operandTwo !== '') {
+                currentOperation.result = multiply(+currentOperation.operandOne, +currentOperation.operandTwo);
+            } else {
+                currentOperation.result = multiply(+currentOperation.operandOne, +currentOperation.operandOne);
+            }
             resetCalculator();
             break;
         case ('%'):
-            currentOperation.result = modulo(+currentOperation.operandOne, currentOperation.operandTwo);
+            if (currentOperation.operandTwo !== '') {
+                currentOperation.result = modulo(+currentOperation.operandOne, currentOperation.operandTwo);
+            } else {
+                currentOperation.result = modulo(+currentOperation.operandOne, currentOperation.operandOne);
+            }
             resetCalculator();
             break;
     }
@@ -152,12 +179,15 @@ function showOnScreen(currentOperation) {
 
 const numberAccomulator = (numberPressed, operand) => currentOperation[operand] += numberPressed;
 
-function checkCalcObjStatus() { 
-    
-    if (currentOperation.operator === '' || currentOperation.operandOne === '' || currentOperation.operandTwo === '') return 0;
+function checkCalcObjStatus(btnPressed) { 
 
+    if (btnPressed === 'equals') { //Only allows = to work if either operand one and operator exist (self calc) or if all exist for normal calc
+        return ((currentOperation.operandOne !== '' && currentOperation.operator !== '' && currentOperation.operandTwo !== '') || (currentOperation.operandOne !== '' && currentOperation.operator !== '' && currentOperation.operandTwo === '')) ? 1 : 0;
+    }
 
-    return 1;    
+    if (btnPressed === 'op') {
+        return (currentOperation.operator !== '' && currentOperation.operandOne === '' && currentOperation.operandTwo === '') ? 0 : 1; //If user presses operator only do nothing
+    }  
 
 }
 
