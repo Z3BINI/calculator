@@ -61,7 +61,7 @@ const currentOperation = { //Initialize the current operation object
 
 calcBtns.forEach(btn => btn.addEventListener('click', whatIsBeingClicked)); 
 
-function whatIsBeingClicked(event) { console.log(currentOperation);
+function whatIsBeingClicked(event) { 
 
     const clickedElementClasses = event.target.className; //Get the classes of clicked element to verify/control
 
@@ -109,6 +109,24 @@ function whatIsBeingClicked(event) { console.log(currentOperation);
         currentOperation.result = 0;
     }
 
+    if (clickedElementClasses.includes('negPlus')) {
+        if (currentOperation.operandOne !== '' && currentOperation.operandTwo === '') {
+            if (!(currentOperation.operandOne.includes('-'))) {
+                currentOperation.operandOne = '-' + currentOperation.operandOne;
+            } else {
+                currentOperation.operandOne = currentOperation.operandOne.slice(1);
+            }            
+        }
+
+        if (currentOperation.operandOne !== '' && currentOperation.operandTwo !== '') {
+            if (!(currentOperation.operandTwo.includes('-'))) {
+                currentOperation.operandTwo = '-' + currentOperation.operandTwo;
+            } else {
+                currentOperation.operandTwo = currentOperation.operandTwo.slice(1);
+            }
+            
+        }
+    }
    
 
     
